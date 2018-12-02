@@ -124,8 +124,10 @@ run_build() {
 
 		if (( Config[outoftree] )); then
 			cat ./*/build.log | xz -9 > "${Config[project],,}-$Version.log.xz"
-			ArtifactsOut+=("${Config[project],,}-$Version.log.xz")
+		else
+			< build.log xz -9 > "${Config[project],,}-$Version.log.xz"
 		fi
+		ArtifactsOut+=("${Config[project],,}-$Version.log.xz")
 
 		if [[ ${Config[uploaddir]} ]]; then
 			printf '%s: Uploading %s\n' "${Config[project]}" "${ArtifactsOut[*]}"
