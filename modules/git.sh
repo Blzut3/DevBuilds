@@ -27,7 +27,7 @@ git_clone() {
 }
 
 git_describe() {
-	git describe --tags
+	git describe --tags --always
 }
 
 readonly -A GitVCS=(
