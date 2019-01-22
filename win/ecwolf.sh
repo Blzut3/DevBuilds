@@ -11,7 +11,7 @@ ecwolf_configure() {
 
 	declare -a CMakeArgs=()
 	cmake_config_init CMakeArgs
-	cmake_vs_parallel CMakeArgs
+	cmake_vs_cflags CMakeArgs -p
 	CMakeArgs+=(
 		'-DINTERNAL_SDL_MIXER=ON'
 		'-DINTERNAL_SDL_MIXER_CODECS=ON'
@@ -76,9 +76,11 @@ ecwolf_package() {
 			cd "$Arch/Release" &&
 			7z a "../../ecwolf-$Arch-$Version.7z" \
 				./*.exe ./*.pk3 "${ExtraFiles[@]}" \
-				-mx=9
+				-mx=9 &&
+			7z a "../../ecwolf-$Arch-$Version.map.xz" ecwolf.map -mx=9 &&
+			7z a "../../ecwolf-$Arch-$Version.pdb.xz" ecwolf.pdb -mx=9
 		) &&
-		Artifacts+=("ecwolf-$Arch-$Version.7z")
+		Artifacts+=("ecwolf-$Arch-$Version.7z" "ecwolf-$Arch-$Version.map.xz" "ecwolf-$Arch-$Version.pdb.xz")
 	done
 }
 

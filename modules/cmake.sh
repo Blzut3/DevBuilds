@@ -40,13 +40,66 @@ cmake_generic_build() {
 	CMAKE_BUILD_PARALLEL_LEVEL=$(nproc) cmake --build . "${ExtraArgs[@]}"
 }
 
-# Adds /MP to C and CXX flags for parallel Visual Studio builds
-cmake_vs_parallel() {
+# Sets up common flags for Visual Studio builds
+# -d = Dynamic CRT
+# -p = Generate PDB and map file
+# -s = Disable parallel building
+cmake_vs_cflags() {
 	declare -n Args=$1
 	shift
 
+	# Have to use - instead of / for the first argument since git-bash will
+	# interpret the slash at the start as a posix path and convert it when
+	# passing to CMake.
+	declare CFlags='-DWIN32 /D_WINDOWS /W3'
+	declare CXXFlags='-DWIN32 /D_WINDOWS /W3 /GR /EHsc'
+	declare CFlagsRelease='-DNDEBUG /O2 /Ob2'
+	declare CXXFlagsRelease='-DNDEBUG /O2 /Ob2'
+	declare LinkRelease='-INCREMENTAL:NO'
+
+	declare GenerateDebugInfo=0
+	declare Parallel=1
+	declare StaticCRT=1
+
+	declare Opt
+	declare OPTIND=1
+	while getopts ':dps' Opt; do
+		case "$Opt" in
+		d)
+			StaticCRT=0
+			;;
+		p)
+			GenerateDebugInfo=1
+			;;
+		s)
+			Parallel=0
+			;;
+		esac
+	done
+	shift $((OPTIND-1))
+
+	if (( GenerateDebugInfo )); then
+		LinkRelease+=' /MAP /DEBUG'
+	fi
+
+	if (( Parallel )); then
+		CFlags+=' /MP'
+		CXXFlags+=' /MP'
+	fi
+
+	if (( StaticCRT )); then
+		CFlagsRelease+=' /MT'
+		CXXFlagsRelease+=' /MT'
+	else
+		CFlagsRelease+=' /MD'
+		CXXFlagsRelease+=' /MD'
+	fi
+
 	Args+=(
-		'-DCMAKE_C_FLAGS=-DWIN32 /D_WINDOWS /W3 /MP'
-		'-DCMAKE_CXX_FLAGS=-DWIN32 /D_WINDOWS /W3 /GR /EHsc /MP'
+		"-DCMAKE_C_FLAGS=$CFlags"
+		"-DCMAKE_CXX_FLAGS=$CXXFlags"
+		"-DCMAKE_C_FLAGS_RELEASE=$CFlagsRelease"
+		"-DCMAKE_CXX_FLAGS_RELEASE=$CXXFlagsRelease"
+		"-DCMAKE_EXE_LINKER_FLAGS_RELEASE=$LinkRelease"
 	)
 }

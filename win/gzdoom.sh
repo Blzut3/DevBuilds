@@ -11,7 +11,7 @@ gzdoom_configure() {
 
 	declare -a CMakeArgs=()
 	cmake_config_init CMakeArgs
-	cmake_vs_parallel CMakeArgs
+	cmake_vs_cflags CMakeArgs
 	CMakeArgs+=(
 		'-DZDOOM_GENERATE_MAPFILE=ON'
 	)
@@ -73,6 +73,21 @@ declare -A GZDoomWin=(
 	[vcs]=GitVCS
 )
 register_build GZDoomWin
+
+# shellcheck disable=SC2034
+declare -A GZDoomLegacyWin=(
+	[branch]='legacy'
+	[build]=cmake_generic_build
+	[configure]=gzdoom_configure
+	[multiarch]='x64 x86'
+	[outoftree]=1
+	[package]=gzdoom_package
+	[project]='GZDoomLegacy'
+	[remote]='https://github.com/drfrag666/gzdoom.git'
+	[uploaddir]=gzdoom-vintage
+	[vcs]=GitVCS
+)
+register_build GZDoomLegacyWin
 
 # libmpg123 isn't distributed with it's MinGW deps and libsndfile is distributed
 # in an installer. Additionally we want to provide fluidsynth which isn't

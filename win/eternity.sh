@@ -11,7 +11,7 @@ eternity_configure() {
 
 	declare -a CMakeArgs=()
 	cmake_config_init CMakeArgs
-	cmake_vs_parallel CMakeArgs
+	cmake_vs_cflags CMakeArgs -d
 
 	declare SDL20Dir=$(lookup_build_dir 'SDL-2.0')
 	declare SDLmixer20Dir=$(lookup_build_dir 'SDL_mixer-2.0')
