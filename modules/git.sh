@@ -8,9 +8,9 @@ git_check() {
 
 	declare OldRev NewRev
 
-	OldRev=$(git describe --tags) &&
+	OldRev=$(git_describe) &&
 	git pull origin "$Branch" &&
-	NewRev=$(git describe --tags) || return
+	NewRev=$(git_describe) || return
 
 	[[ "$OldRev" != "$NewRev" ]]
 }

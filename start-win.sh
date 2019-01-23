@@ -36,9 +36,11 @@ ftp() {
 }
 
 main() {
-	# Load modules and configuration
-	cd "${0%/*}" || return
+	# Need to use realpath to convert Windows path (i.e. one explorer gives) to one git-bash can use
+	declare ScriptPath=$(realpath "$0")
+	cd "${ScriptPath%/*}" || return
 
+	# Load modules and configuration
 	. "$LOCALAPPDATA/BuildServer/config.sh"
 
 	declare Module
