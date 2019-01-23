@@ -1,24 +1,6 @@
 #!/bin/bash
 # shellcheck disable=SC2155,SC2154
 
-# Config structure:
-# {
-#	branch: string
-#	build: fn(&Config, ProjectDir, Arch)
-#	configure: fn(&Config, ProjectDir, Arch)
-#	[multiarch: string] # Space separated
-#	outoftree: bool
-#	package: fn(&Config, ProjectDir, Version, &Artifacts)
-#	project: string
-#	remote: url
-#	uploaddir: string
-#	vcs: &{
-#		check: fn(Branch)
-#		clone: fn(Remote, Branch, Dir)
-#		describe: fn()
-#	}
-# }
-
 # Gets the build directory for a config (for looking up deps)
 lookup_build_dir() {
 	declare ProjectName=$1
