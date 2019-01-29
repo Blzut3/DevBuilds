@@ -9,7 +9,8 @@ git_check() {
 	declare OldRev NewRev
 
 	OldRev=$(git_describe) &&
-	git pull origin "$Branch" &&
+	git fetch origin "$Branch" &&
+	git reset --hard "origin/$Branch" &&
 	NewRev=$(git_describe) || return
 
 	[[ "$OldRev" != "$NewRev" ]]
