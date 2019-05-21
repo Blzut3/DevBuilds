@@ -115,6 +115,7 @@ run_build() {
 			printf '%s: Uploading %s\n' "${Config[project]}" "${ArtifactsOut[*]}"
 			{
 				printf 'user "%s" "%s"\n' "$FTPUsername" "$FTPPassword"
+				printf 'passive\n'
 				printf 'binary\n'
 				printf 'cd %s/%s\n' "$FTPBaseDirectory" "${Config[uploaddir]}"
 
