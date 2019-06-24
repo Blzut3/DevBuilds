@@ -19,13 +19,12 @@ gzdoom_configure() {
 	case "$Arch" in
 	x64)
 		CMakeArgs+=(
-			'-GVisual Studio 15 2017 Win64'
+			'-GVisual Studio 16 2019 Win64'
 		)
 		;;
 	x86)
 		CMakeArgs+=(
-			'-GVisual Studio 15 2017'
-			'-Tv141_xp'
+			'-GVisual Studio 16 2019'
 		)
 		;;
 	esac
