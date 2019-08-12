@@ -60,6 +60,11 @@ is `~/Library/Preferences/BuildServer/config.sh` on macOS and
 * **FTPServer**
 * **FTPUsername**
 
+On macOS the following are also required for app signing.
+
+* **MacDeveloperID**
+* **MacDevelopmentTeam**
+
 The config file, being a bash script, may of course contain other statements
 such as setting the PATH.
 

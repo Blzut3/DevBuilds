@@ -10,11 +10,14 @@ eternity_build() {
 
 	cd macosx || return
 	xcodebuild -target eternity clean
-	xcodebuild -target eternity || return
+	xcodebuild -target eternity DEVELOPMENT_TEAM="$MacDevelopmentTeam" || return
+
+	mkdir -p builds
+	cp build/Release/eternity builds/ || return
 
 	cd launcher || return
 	xcodebuild clean
-	xcodebuild || return
+	xcodebuild DEVELOPMENT_TEAM="$MacDevelopmentTeam" || return
 }
 
 eternity_configure() {

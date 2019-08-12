@@ -3,6 +3,20 @@
 
 set -o pipefail
 
+# Ensure that critical variables are set in the config
+check_config() {
+	if [[ -z $MacDeveloperID ]]; then
+		echo 'ERROR: MacDeveloperID (Developer ID Application creator) not set in config.' >&2
+		return 1
+	fi
+
+	if [[ -z $MacDevelopmentTeam ]]; then
+		echo 'ERROR: MacDevelopmentTeam (Xcode DEVELOPMENT_TEAM) is not set in config.' >&2
+		return 1
+	fi
+	return 0
+}
+
 nproc() {
 	sysctl -n hw.ncpu
 }
@@ -68,9 +82,7 @@ sign_app() {
 	declare Bundle=$1
 	shift
 
-	declare DeveloperID='Developer ID Application: Braden Obrzut'
-
-	codesign -s "$DeveloperID" -f --deep "$Bundle"
+	codesign -s "Developer ID Application: $MacDeveloperID" -f --deep "$Bundle"
 }
 
 main() {
@@ -78,6 +90,8 @@ main() {
 	cd "${0%/*}" || return
 
 	. ~/Library/Preferences/BuildServer/config.sh
+
+	check_config || return
 
 	declare Module
 	for Module in modules/*.sh mac/*.sh; do
