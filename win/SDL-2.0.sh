@@ -25,7 +25,7 @@ declare -A SDL20Win=(
 	[outoftree]=0
 	[package]=SDL20_null
 	[project]='SDL-2.0'
-	[remote]='https://www.libsdl.org/release/SDL2-devel-2.0.9-VC.zip'
+	[remote]='https://www.libsdl.org/release/SDL2-devel-2.0.10-VC.zip'
 	[uploaddir]=''
 	[vcs]=DownloadVCS
 )
