@@ -9,7 +9,7 @@ git_check() {
 	declare OldRev NewRev
 
 	OldRev=$(git_describe) &&
-	git fetch origin "$Branch" --tags &&
+	git fetch origin "$Branch" --recurse-submodules --tags &&
 	git reset --hard "origin/$Branch" &&
 	NewRev=$(git_describe) || return
 
