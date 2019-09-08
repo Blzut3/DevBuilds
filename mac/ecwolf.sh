@@ -112,15 +112,15 @@ ecwolf_package() {
 
 # shellcheck disable=SC2034
 declare -A ECWolfMac=(
-	[branch]='@'
+	[branch]='master'
 	[build]=cmake_generic_build
 	[configure]=ecwolf_configure
 	[multiarch]='x86_64 i386 ppc'
 	[outoftree]=1
 	[package]=ecwolf_package
 	[project]='ECWolf'
-	[remote]='ssh://hg@bitbucket.org/ecwolf/ecwolf'
+	[remote]='ssh://hg@bitbucket.org/ecwolf/ecwolf.git'
 	[uploaddir]=ecwolf-mac
-	[vcs]=MercurialVCS
+	[vcs]=GitVCS
 )
 register_build ECWolfMac

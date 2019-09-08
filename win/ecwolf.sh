@@ -86,15 +86,15 @@ ecwolf_package() {
 
 # shellcheck disable=SC2034
 declare -A ECWolfWin=(
-	[branch]='@'
+	[branch]='master'
 	[build]=cmake_generic_build
 	[configure]=ecwolf_configure
 	[multiarch]='x64 x86'
 	[outoftree]=1
 	[package]=ecwolf_package
 	[project]='ECWolf'
-	[remote]='https://bitbucket.org/ecwolf/ecwolf'
+	[remote]='https://bitbucket.org/ecwolf/ecwolf.git'
 	[uploaddir]=ecwolf
-	[vcs]=MercurialVCS
+	[vcs]=GitVCS
 )
 register_build ECWolfWin
