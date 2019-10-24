@@ -36,29 +36,7 @@ lzdoom_configure() {
 }
 
 lzdoom_package() {
-	declare -n Config=$1
-	shift
-	#declare ProjectDir=$1
-	shift
-	declare Version=$1
-	shift
-	declare -n Artifacts=$1
-	shift
-
-	declare Arch
-	for Arch in ${Config[multiarch]}; do
-		(
-			declare DepsDir=$(lookup_build_dir "GZDoom-Deps-$Arch")
-
-			cd "$Arch/Release" &&
-			7z a "../../lzdoom-$Arch-$Version.7z" \
-				./*.exe ./*.pk3 soundfonts/* fm_banks/* \
-				"$DepsDir"/*.dll \
-				-mx=9 &&
-			7z a "../../lzdoom-$Arch-$Version.map.bz2" lzdoom.map -mx=9
-		) &&
-		Artifacts+=("lzdoom-$Arch-$Version.7z" "lzdoom-$Arch-$Version.map.bz2")
-	done
+	gzdoom_package_generic lzdoom "$@"
 }
 
 # shellcheck disable=SC2034

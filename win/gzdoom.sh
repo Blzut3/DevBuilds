@@ -34,7 +34,9 @@ gzdoom_configure() {
 	cmake "$ProjectDir" "${CMakeArgs[@]}"
 }
 
-gzdoom_package() {
+gzdoom_package_generic() {
+	declare PackageName=$1
+	shift
 	declare -n Config=$1
 	shift
 	#declare ProjectDir=$1
@@ -50,14 +52,18 @@ gzdoom_package() {
 			declare DepsDir=$(lookup_build_dir "GZDoom-Deps-$Arch")
 
 			cd "$Arch/Release" &&
-			7z a "../../gzdoom-$Arch-$Version.7z" \
+			7z a "../../$PackageName-$Arch-$Version.7z" \
 				./*.exe ./*.pk3 soundfonts/* fm_banks/* \
 				"$DepsDir"/*.dll \
 				-mx=9 &&
-			7z a "../../gzdoom-$Arch-$Version.map.bz2" gzdoom.map -mx=9
+			7z a "../../$PackageName-$Arch-$Version.map.bz2" "$PackageName.map" -mx=9
 		) &&
-		Artifacts+=("gzdoom-$Arch-$Version.7z" "gzdoom-$Arch-$Version.map.bz2")
+		Artifacts+=("$PackageName-$Arch-$Version.7z" "$PackageName-$Arch-$Version.map.bz2")
 	done
+}
+
+gzdoom_package() {
+	gzdoom_package_generic gzdoom "$@"
 }
 
 # shellcheck disable=SC2034
