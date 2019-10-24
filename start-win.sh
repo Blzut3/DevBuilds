@@ -20,21 +20,6 @@ extract_and_flatten() {
 	rmdir "$BaseDir"
 }
 
-# Windows ftp doesn't like reading from stdin
-ftp() {
-	declare ScriptFile
-	# Need to specify LOCALAPPDATA/Temp since git-bash won't convert -s:/tmp
-	# into Windows path.
-	ScriptFile=$(mktemp -p "$LOCALAPPDATA/Temp") || return 1
-
-	cat > "$ScriptFile" &&
-	command ftp -s:"$ScriptFile" "$@"
-	declare Ret=$?
-
-	rm -f "$ScriptFile"
-	return "$Ret"
-}
-
 main() {
 	# Need to use realpath to convert Windows path (i.e. one explorer gives) to one git-bash can use
 	declare ScriptPath=$(realpath "$0")

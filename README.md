@@ -55,10 +55,10 @@ The following variables must be set in a config file. The location of this file
 is `~/Library/Preferences/BuildServer/config.sh` on macOS and
 `%LOCALAPPDATA%\BuildServer\config.sh` on Windows.
 
-* **FTPBaseDirectory**
-* **FTPPassword**
-* **FTPServer**
-* **FTPUsername**
+* **SSHBaseDirectory**
+* **SSHIdentity** (id_rsa)
+* **SSHServer**
+* **SSHUsername**
 
 On macOS the following are also required for app signing.
 

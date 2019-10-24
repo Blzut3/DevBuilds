@@ -112,20 +112,7 @@ run_build() {
 		ArtifactsOut+=("${Config[project],,}-$Version.log.xz")
 
 		if [[ ${Config[uploaddir]} ]]; then
-			printf '%s: Uploading %s\n' "${Config[project]}" "${ArtifactsOut[*]}"
-			{
-				printf 'user "%s" "%s"\n' "$FTPUsername" "$FTPPassword"
-				printf 'passive\n'
-				printf 'binary\n'
-				printf 'cd %s/%s\n' "$FTPBaseDirectory" "${Config[uploaddir]}"
-
-				declare Artifact
-				for Artifact in "${ArtifactsOut[@]}"; do
-					printf 'put "%s"\n' "$Artifact"
-				done
-
-				printf 'bye\n'
-			} | ftp -n "$FTPServer"
+			scp -i "$SSHIdentity" "${ArtifactsOut[@]}" "$SSHUsername@$SSHServer:$SSHBaseDirectory/${Config[uploaddir]}/"
 		fi
 
 		rm -rf "${ArtifactsOut[@]}"
