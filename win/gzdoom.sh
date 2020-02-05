@@ -52,10 +52,12 @@ gzdoom_package_generic() {
 			declare DepsDir=$(lookup_build_dir "GZDoom-Deps-$Arch")
 			declare OpenALDir=$(lookup_build_dir "OpenAL")
 
+			mapfile -t DepsDLLs < <(find "$DepsDir" -iname '*.dll' -and -not -iname 'openal32.dll')
+
 			cd "$Arch/Release" &&
 			7z a "../../$PackageName-$Arch-$Version.7z" \
 				./*.exe ./*.pk3 soundfonts/* fm_banks/* \
-				"$DepsDir"/*.dll \
+				"${DepsDLLs[@]}" \
 				"$OpenALDir/bin/$Arch/openal32.dll" \
 				-mx=9 &&
 			7z a "../../$PackageName-$Arch-$Version.map.bz2" "$PackageName.map" -mx=9
