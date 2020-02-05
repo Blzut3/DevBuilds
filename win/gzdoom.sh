@@ -50,11 +50,13 @@ gzdoom_package_generic() {
 	for Arch in ${Config[multiarch]}; do
 		(
 			declare DepsDir=$(lookup_build_dir "GZDoom-Deps-$Arch")
+			declare OpenALDir=$(lookup_build_dir "OpenAL")
 
 			cd "$Arch/Release" &&
 			7z a "../../$PackageName-$Arch-$Version.7z" \
 				./*.exe ./*.pk3 soundfonts/* fm_banks/* \
 				"$DepsDir"/*.dll \
+				"$OpenALDir/bin/$Arch/openal32.dll" \
 				-mx=9 &&
 			7z a "../../$PackageName-$Arch-$Version.map.bz2" "$PackageName.map" -mx=9
 		) &&
