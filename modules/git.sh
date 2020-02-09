@@ -11,6 +11,7 @@ git_check() {
 	OldRev=$(git_describe) &&
 	git fetch origin "$Branch" --tags &&
 	git reset --hard "origin/$Branch" &&
+	git submodule update --recursive &&
 	NewRev=$(git_describe) || return
 
 	[[ "$OldRev" != "$NewRev" ]]
