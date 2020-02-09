@@ -1,6 +1,20 @@
 #!/bin/bash
 # shellcheck disable=SC2155
 
+# Need to use an older version of CMake for VS2005
+ecwolf_set_legacy_cmake() {
+	PATH="/c/Program Files/CMake-3.11/bin:$PATH"
+}
+
+ecwolf_build() {
+	declare Arch=$3
+	if [[ $Arch == 'legacy' ]]; then
+		ecwolf_set_legacy_cmake
+	fi
+
+	cmake_generic_build "$@"
+}
+
 ecwolf_configure() {
 	#declare -n Config=$1
 	shift
@@ -33,6 +47,8 @@ ecwolf_configure() {
 		)
 		;;
 	legacy)
+		ecwolf_set_legacy_cmake
+
 		declare SDL12Dir=$(lookup_build_dir 'SDL-1.2')
 		declare SDLnet12Dir=$(lookup_build_dir 'SDL_net-1.2')
 		CMakeArgs+=(
@@ -87,7 +103,7 @@ ecwolf_package() {
 # shellcheck disable=SC2034
 declare -A ECWolfWin=(
 	[branch]='master'
-	[build]=cmake_generic_build
+	[build]=ecwolf_build
 	[configure]=ecwolf_configure
 	[multiarch]='x64 x86 legacy'
 	[outoftree]=1

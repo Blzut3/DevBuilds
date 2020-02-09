@@ -111,6 +111,7 @@ common code to be shared across platforms.
 * Visual Studio 2017
 * Visual Studio 2005
 * 7-Zip
-* CMake 3.11 (Final version for VS2005)
+* CMake > 3.11
+* CMake 3.11 at C:\Program Files\CMake-3.11 (Final version for VS2005)
 * Git (provides Bash)
 * Mercurial
