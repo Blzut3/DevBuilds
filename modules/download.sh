@@ -23,7 +23,7 @@ download_clone() {
 
 	mkdir -p "$Dir"
 	cd "$Dir" &&
-	curl -fgO "$Remote"
+	curl -LfgO "$Remote"
 }
 
 
