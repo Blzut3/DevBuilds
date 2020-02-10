@@ -52,7 +52,7 @@ gzdoom_package_generic() {
 			declare OpenALDir=$(lookup_build_dir "OpenAL")
 			declare DepsDir
 			if [[ $PackageName == 'gzdoom' ]]; then
-				DepsDir="$(lookup_build_dir "ZMsuic")/$Arch"
+				DepsDir="$(lookup_build_dir "ZMusic")/$Arch"
 			else
 				DepsDir=$(lookup_build_dir "GZDoom-Deps-$Arch")
 			fi
