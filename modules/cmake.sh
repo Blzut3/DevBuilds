@@ -7,7 +7,7 @@ cmake_config_init() {
 
 	Args+=('-DCMAKE_BUILD_TYPE=Release')
 
-	if [[ $(uname -o) == 'Msys' ]]; then
+	if [[ $(uname -o 2> /dev/null) == 'Msys' ]]; then
 		# Technically this is only for VS, but I think it would be harmless to
 		# specify it for other compilers
 		Args+=('-DCMAKE_CONFIGURATION_TYPES=Release')
