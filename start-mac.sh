@@ -82,7 +82,7 @@ sign_app() {
 	declare Bundle=$1
 	shift
 
-	codesign -s "Developer ID Application: $MacDeveloperID" -f --deep "$Bundle"
+	codesign --timestamp --options=runtime -s "Developer ID Application: $MacDeveloperID" -f --deep "$Bundle"
 }
 
 main() {
