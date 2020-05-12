@@ -94,12 +94,12 @@ ecwolf_package() {
 		-arch ppc ppc/ecwolf.app/Contents/MacOS/ecwolf \
 		-create -output ECWolf.app/Contents/MacOS/ecwolf &&
 
-	install_name_tool -change @rpath/SDL.framework/Versions/A/SDL @executable_path/../Frameworks/SDL.framework/SDL ECWolf.app/Contents/MacOS/ecwolf &&
-	install_name_tool -change @rpath/SDL_net.framework/Versions/A/SDL @executable_path/../Frameworks/SDL_net.framework/SDL_net ECWolf.app/Contents/MacOS/ecwolf &&
+	install_name_tool -change @rpath/SDL.framework/Versions/A/SDL @executable_path/../Frameworks/SDL ECWolf.app/Contents/MacOS/ecwolf &&
+	install_name_tool -change @rpath/SDL_net.framework/Versions/A/SDL @executable_path/../Frameworks/SDL_net ECWolf.app/Contents/MacOS/ecwolf &&
 
-	mkdir -p ECWolf.app/Contents/Frameworks/SDL{,_net}.framework &&
-	lipo "${SDL12Framework}/Versions/A/SDL" -remove x86_64 -output ECWolf.app/Contents/Frameworks/SDL.framework/SDL &&
-	cp "${SDLnet12Framework}/Versions/A/SDL_net" ECWolf.app/Contents/Frameworks/SDL_net.framework/ &&
+	mkdir -p ECWolf.app/Contents/Frameworks &&
+	lipo "${SDL12Framework}/Versions/A/SDL" -remove x86_64 -output ECWolf.app/Contents/Frameworks/SDL &&
+	cp "${SDLnet12Framework}/Versions/A/SDL_net" ECWolf.app/Contents/Frameworks/ &&
 
 	/usr/libexec/PlistBuddy -c "Set :CFBundleVersion $Version" ECWolf.app/Contents/Info.plist &&
 	/usr/libexec/PlistBuddy -c "Set :CFBundleShortVersionString $Version" ECWolf.app/Contents/Info.plist &&
