@@ -51,18 +51,29 @@ gzdoom_package_generic() {
 		(
 			declare OpenALDir=$(lookup_build_dir "OpenAL")
 			declare DepsDir
-			if [[ $PackageName == 'gzdoom' ]]; then
+			if [[ $PackageName == 'gzdoom' || $PackageName == 'raze' ]]; then
 				DepsDir="$(lookup_build_dir "ZMusic")/$Arch"
 			else
 				DepsDir=$(lookup_build_dir "GZDoom-Deps-$Arch")
 			fi
 
-			mapfile -t DepsDLLs < <(find "$DepsDir" -iname '*.dll' -and -not -iname 'openal32.dll' -and -not -iname 'zmusiclite.dll')
+			declare ExcludeZMusic
+			if [[ $PackageName == 'raze' ]]; then
+				ExcludeZMusic='zmusic.dll'
+			else
+				ExcludeZMusic='zmusiclite.dll'
+			fi
+
+			mapfile -t ExtraFiles < <(find "$DepsDir" -iname '*.dll' -and -not -iname 'openal32.dll' -and -not -iname "$ExcludeZMusic")
+
+			if [[ -d fm_banks ]]; then
+				ExtraFiles+=(fm_banks/*)
+			fi
 
 			cd "$Arch/Release" &&
 			7z a "../../$PackageName-$Arch-$Version.7z" \
-				./*.exe ./*.pk3 soundfonts/* fm_banks/* \
-				"${DepsDLLs[@]}" \
+				./*.exe ./*.pk3 soundfonts/* \
+				"${ExtraFiles[@]}" \
 				"$OpenALDir/bin/$Arch/openal32.dll" \
 				-mx=9 &&
 			7z a "../../$PackageName-$Arch-$Version.map.bz2" "$PackageName.map" -mx=9
