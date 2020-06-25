@@ -66,11 +66,12 @@ gzdoom_package_generic() {
 
 			mapfile -t ExtraFiles < <(find "$DepsDir" -iname '*.dll' -and -not -iname 'openal32.dll' -and -not -iname "$ExcludeZMusic")
 
+			cd "$Arch/Release" || return
+
 			if [[ -d fm_banks ]]; then
 				ExtraFiles+=(fm_banks/*)
 			fi
 
-			cd "$Arch/Release" &&
 			7z a "../../$PackageName-$Arch-$Version.7z" \
 				./*.exe ./*.pk3 soundfonts/* \
 				"${ExtraFiles[@]}" \
