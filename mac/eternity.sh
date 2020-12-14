@@ -1,4 +1,4 @@
-#!/usr/local/bin/bash-4.4
+#!/usr/local/bin/bash-5.1
 
 eternity_build() {
 	#declare -n Config=$1

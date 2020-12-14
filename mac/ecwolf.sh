@@ -1,4 +1,4 @@
-#!/usr/local/bin/bash-4.4
+#!/usr/local/bin/bash-5.1
 # shellcheck disable=SC2155
 
 ecwolf_configure() {
@@ -22,20 +22,23 @@ ecwolf_configure() {
 		mac_target 10.7
 		CMakeArgs+=(
 			'-DCMAKE_OSX_ARCHITECTURES=x86_64'
-			'-DCMAKE_OSX_SYSROOT=/Developer/SDKs/MacOSX10.11.sdk'
+			"-DCMAKE_OSX_SYSROOT=$MacSdkPath/MacOSX10.11.sdk"
 			'-DINTERNAL_SDL=ON' '-DINTERNAL_SDL_NET=ON'
 		)
 		;;
 	i386)
 		mac_target 10.4
+		declare NativeBuildDir=$(lookup_build_dir 'ECWolf' 'x86_64')
 		declare SDL12Framework="$(lookup_build_dir 'SDL-1.2')/SDL.framework"
 		declare SDLnet12Framework="$(lookup_build_dir 'SDL_net-1.2')/SDL_net.framework"
 		CMakeArgs+=(
 			'-DCMAKE_OSX_ARCHITECTURES=i386'
-			'-DCMAKE_OSX_SYSROOT=/Developer/SDKs/MacOSX10.6.sdk'
+			"-DCMAKE_OSX_SYSROOT=$MacSdkPath/MacOSX10.6.sdk"
 			'-DCMAKE_SKIP_RPATH=ON'
 			'-DCMAKE_C_COMPILER=/usr/local/bin/gcc-4.2'
 			'-DCMAKE_CXX_COMPILER=/usr/local/bin/g++-4.2'
+			"-DIMPORT_EXECUTABLES=$NativeBuildDir/ImportExecutables.cmake"
+			'-DFORCE_CROSSCOMPILE=ON'
 			'-DINTERNAL_SDL=OFF'
 			'-DINTERNAL_SDL_NET=OFF'
 			'-DFORCE_SDL12=ON'
@@ -52,10 +55,10 @@ ecwolf_configure() {
 		declare SDLnet12Framework="$(lookup_build_dir 'SDL_net-1.2')/SDL_net.framework"
 		CMakeArgs+=(
 			'-DCMAKE_OSX_ARCHITECTURES=ppc'
-			'-DCMAKE_OSX_SYSROOT=/Developer/SDKs/MacOSX10.4u.sdk'
+			"-DCMAKE_OSX_SYSROOT=$MacSdkPath/MacOSX10.5.sdk"
 			'-DCMAKE_SKIP_RPATH=ON'
-			'-DCMAKE_C_COMPILER=/usr/local/bin/gcc-4.0'
-			'-DCMAKE_CXX_COMPILER=/usr/local/bin/g++-4.0'
+			'-DCMAKE_C_COMPILER=/usr/local/bin/gcc-4.2'
+			'-DCMAKE_CXX_COMPILER=/usr/local/bin/g++-4.2'
 			'-DFORCE_CROSSCOMPILE=ON'
 			"-DIMPORT_EXECUTABLES=$NativeBuildDir/ImportExecutables.cmake"
 			'-DINTERNAL_SDL=OFF'

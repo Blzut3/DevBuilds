@@ -1,4 +1,4 @@
-#!/usr/local/bin/bash-4.4
+#!/usr/local/bin/bash-5.1
 
 SDL12_null() {
 	:
