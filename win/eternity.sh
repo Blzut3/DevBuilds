@@ -13,30 +13,17 @@ eternity_configure() {
 	cmake_config_init CMakeArgs
 	cmake_vs_cflags CMakeArgs -d
 
-	declare SDL20Dir=$(lookup_build_dir 'SDL-2.0')
-	declare SDLmixer20Dir=$(lookup_build_dir 'SDL_mixer-2.0')
-	declare SDLnet20Dir=$(lookup_build_dir 'SDL_net-2.0')
-
-	CMakeArgs+=(
-		"-DSDL2_INCLUDE_DIR=$SDL20Dir/include"
-		"-DSDL2_LIBRARY=$SDL20Dir/lib/$Arch/SDL2.lib"
-		"-DSDL2_MIXER_INCLUDE_DIR=$SDLmixer20Dir/include"
-		"-DSDL2_MIXER_LIBRARY=$SDLmixer20Dir/lib/$Arch/SDL2_mixer.lib"
-		"-DSDL2_NET_INCLUDE_DIR=$SDLnet20Dir/include"
-		"-DSDL2_NET_LIBRARY=$SDLnet20Dir/lib/$Arch/SDL2_net.lib"
-	)
-
 	case "$Arch" in
 	x64)
 		CMakeArgs+=(
-			'-GVisual Studio 15 2017 Win64'
-			'-Tv141_xp'
+			'-GVisual Studio 16 2019'
+			'-Ax64'
 		)
 		;;
 	x86)
 		CMakeArgs+=(
-			'-GVisual Studio 15 2017'
-			'-Tv141_xp'
+			'-GVisual Studio 16 2019'
+			'-AWin32'
 		)
 		;;
 	esac
@@ -54,25 +41,18 @@ eternity_package() {
 	declare -n Artifacts=$1
 	shift
 
-	declare SDL20Dir=$(lookup_build_dir 'SDL-2.0')
-	declare SDLmixer20Dir=$(lookup_build_dir 'SDL_mixer-2.0')
-	declare SDLnet20Dir=$(lookup_build_dir 'SDL_net-2.0')
-
 	declare Arch
 	for Arch in ${Config[multiarch]}; do
 		(
 			cd "$Arch" &&
 			7z a "../Eternity-$Arch-$Version.7z" \
-				"$(pwd)"/source/Release/*.exe \
-				"$(pwd)"/eecrashreport/Release/*.exe \
+				"$(pwd)"/eternity/Release/*.* \
 				"$ProjectDir/user" \
 				"$ProjectDir/base" \
-				"$SDL20Dir/lib/$Arch"/*.dll \
-				"$SDLmixer20Dir/lib/$Arch"/*.dll \
-				"$SDLnet20Dir/lib/$Arch"/*.dll \
-				-mx=9 '-xr!.gitignore' '-xr!delete.me'
+				-mx=9 '-xr!.gitignore' '-xr!delete.me' '-x!*.map' &&
+			7z a "../Eternity-$Arch-$Version.map.xz" "$(pwd)/eternity/Release/eternity.map" -mx=9
 		) &&
-		Artifacts+=("Eternity-$Arch-$Version.7z")
+		Artifacts+=("Eternity-$Arch-$Version.7z" "Eternity-$Arch-$Version.map.xz")
 	done
 }
 
