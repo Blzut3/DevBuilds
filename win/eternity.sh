@@ -22,8 +22,8 @@ eternity_configure() {
 		;;
 	x86)
 		CMakeArgs+=(
-			'-GVisual Studio 16 2019'
-			'-AWin32'
+			'-GVisual Studio 15 2017'
+			'-Tv141_xp'
 		)
 		;;
 	esac
