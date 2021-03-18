@@ -50,8 +50,8 @@ eternity_package() {
 				"$ProjectDir/user" \
 				"$ProjectDir/base" \
 				-mx=9 '-xr!.gitignore' '-xr!delete.me' '-x!*.map' &&
-			7z a "../Eternity-$Arch-$Version.map.xz" "$(pwd)/eternity/Release/eternity.map" -mx=9
-            7z a "../Eternity-$Arch-$Version.pdb.xz" "$(pwd)/eternity/Release/eternity.pdb" -mx=9
+			7z a "../Eternity-$Arch-$Version.map.xz" "$(pwd)/eternity/Release/eternity.map" -mx=9 &&
+			7z a "../Eternity-$Arch-$Version.pdb.xz" "$(pwd)/eternity/Release/eternity.pdb" -mx=9
 		) &&
 		Artifacts+=("Eternity-$Arch-$Version.7z" "Eternity-$Arch-$Version.map.xz" "Eternity-$Arch-$Version.pdb.xz")
 	done
