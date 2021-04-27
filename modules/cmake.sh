@@ -30,8 +30,8 @@ cmake_generic_build() {
 	fi
 
 	declare -a ExtraArgs=(--clean-first)
-	# Visual Studio generator won't work unless we specify Release explicitly
-	if grep -q '^CMAKE_GENERATOR:INTERNAL=Visual Studio' CMakeCache.txt; then
+	# Visual Studio and Xcode generator won't work unless we specify Release explicitly
+	if grep -q -E '^CMAKE_GENERATOR:INTERNAL=(Visual Studio|Xcode)' CMakeCache.txt; then
 		ExtraArgs+=(--config Release)
 	fi
 
