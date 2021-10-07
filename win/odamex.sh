@@ -74,7 +74,7 @@ odamex_package() {
 
 # shellcheck disable=SC2034
 declare -A OdamexWin=(
-	[branch]='master'
+	[branch]='stable'
 	[build]=cmake_generic_build
 	[configure]=odamex_configure
 	[multiarch]='x64 x86'
