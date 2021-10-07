@@ -28,14 +28,14 @@ odamex_configure() {
 	case "$Arch" in
 	x64)
 		CMakeArgs+=(
-			'-GVisual Studio 15 2017 Win64'
-			'-Tv141_xp'
+			'-GVisual Studio 16 2019'
+			'-Ax64'
 		)
 		;;
 	x86)
 		CMakeArgs+=(
-			'-GVisual Studio 15 2017'
-			'-Tv141_xp'
+			'-GVisual Studio 16 2019'
+			'-AWin32'
 		)
 		;;
 	esac
