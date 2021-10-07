@@ -31,7 +31,7 @@ declare -A OpenALWin=(
 	[outoftree]=0
 	[package]=OpenAL_null
 	[project]='OpenAL'
-	[remote]='https://kcat.strangesoft.net/openal-binaries/openal-soft-1.20.1-bin.zip'
+	[remote]='https://kcat.strangesoft.net/openal-binaries/openal-soft-1.21.1-bin.zip'
 	[uploaddir]=''
 	[vcs]=DownloadVCS
 )

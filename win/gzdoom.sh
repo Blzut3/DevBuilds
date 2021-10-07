@@ -131,7 +131,7 @@ declare -A GZDoomDepsWin32=(
 	[outoftree]=0
 	[package]=gzdoom_null
 	[project]='GZDoom-Deps-x86'
-	[remote]='https://zdoom.org/files/gzdoom/bin/gzdoom-bin-3-7-2.zip'
+	[remote]='https://zdoom.org/files/gzdoom/bin/gzdoom-4-7-0-Windows-32bit.zip'
 	[uploaddir]=''
 	[vcs]=DownloadVCS
 )
@@ -146,7 +146,7 @@ declare -A GZDoomDepsWin64=(
 	[outoftree]=0
 	[package]=gzdoom_null
 	[project]='GZDoom-Deps-x64'
-	[remote]='https://zdoom.org/files/gzdoom/bin/gzdoom-bin-3-7-2-x64.zip'
+	[remote]='https://zdoom.org/files/gzdoom/bin/gzdoom-4-7-0-Windows-64bit.zip'
 	[uploaddir]=''
 	[vcs]=DownloadVCS
 )

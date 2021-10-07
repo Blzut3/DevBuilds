@@ -27,7 +27,6 @@ lzdoom_configure() {
 		CMakeArgs+=(
 			'-GVisual Studio 15 2017'
 			'-AWin32'
-			'-Tv141_xp'
 		)
 		;;
 	esac
