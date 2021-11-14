@@ -7,7 +7,7 @@ qzdoom_package() {
 
 # shellcheck disable=SC2034
 declare -A QZDoomWin=(
-	[branch]='master202012'
+	[branch]='qz-master-2021-10-27'
 	[build]=cmake_generic_build
 	[configure]=gzdoom_configure
 	[multiarch]='x64 x86'
