@@ -92,7 +92,7 @@ declare -A GZDoomWin=(
 	[branch]='master'
 	[build]=cmake_generic_build
 	[configure]=gzdoom_configure
-	[multiarch]='x64 x86'
+	[multiarch]='x64'
 	[outoftree]=1
 	[package]=gzdoom_package
 	[project]='GZDoom'
@@ -123,21 +123,6 @@ gzdoom_deps_configure() {
 }
 
 # shellcheck disable=SC2034
-declare -A GZDoomDepsWin32=(
-	[branch]=''
-	[build]=gzdoom_null
-	[configure]=gzdoom_deps_configure
-	[multiarch]='all'
-	[outoftree]=0
-	[package]=gzdoom_null
-	[project]='GZDoom-Deps-x86'
-	[remote]='https://zdoom.org/files/gzdoom/bin/gzdoom-4-7-0-Windows-32bit.zip'
-	[uploaddir]=''
-	[vcs]=DownloadVCS
-)
-register_dep GZDoomDepsWin32
-
-# shellcheck disable=SC2034
 declare -A GZDoomDepsWin64=(
 	[branch]=''
 	[build]=gzdoom_null
@@ -146,7 +131,7 @@ declare -A GZDoomDepsWin64=(
 	[outoftree]=0
 	[package]=gzdoom_null
 	[project]='GZDoom-Deps-x64'
-	[remote]='https://zdoom.org/files/gzdoom/bin/gzdoom-4-7-0-Windows-64bit.zip'
+	[remote]='https://github.com/coelckers/gzdoom/releases/download/g4.8.0/gzdoom-4-8-0-Windows-64bit.zip'
 	[uploaddir]=''
 	[vcs]=DownloadVCS
 )
