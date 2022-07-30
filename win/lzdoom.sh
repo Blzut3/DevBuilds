@@ -19,14 +19,16 @@ lzdoom_configure() {
 	case "$Arch" in
 	x64)
 		CMakeArgs+=(
-			'-GVisual Studio 15 2017'
+			'-GVisual Studio 17 2022'
 			'-Ax64'
+			'-Tv141'
 		)
 		;;
 	x86)
 		CMakeArgs+=(
-			'-GVisual Studio 15 2017'
+			'-GVisual Studio 17 2022'
 			'-AWin32'
+			'-Tv141'
 		)
 		;;
 	esac

@@ -14,7 +14,7 @@ raze_configure() {
 	cmake_vs_cflags CMakeArgs
 	CMakeArgs+=(
 		'-DCOMPILE_GENERATE_MAPFILE=ON'
-		'-GVisual Studio 16 2019'
+		'-GVisual Studio 17 2022'
 		'-Ax64'
 	)
 

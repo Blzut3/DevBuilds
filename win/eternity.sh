@@ -16,13 +16,13 @@ eternity_configure() {
 	case "$Arch" in
 	x64)
 		CMakeArgs+=(
-			'-GVisual Studio 16 2019'
+			'-GVisual Studio 17 2022'
 			'-Ax64'
 		)
 		;;
 	x86)
 		CMakeArgs+=(
-			'-GVisual Studio 15 2017'
+			'-GVisual Studio 17 2022'
 			'-Tv141_xp'
 		)
 		;;

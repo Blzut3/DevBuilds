@@ -28,13 +28,13 @@ odamex_configure() {
 	case "$Arch" in
 	x64)
 		CMakeArgs+=(
-			'-GVisual Studio 16 2019'
+			'-GVisual Studio 17 2022'
 			'-Ax64'
 		)
 		;;
 	x86)
 		CMakeArgs+=(
-			'-GVisual Studio 16 2019'
+			'-GVisual Studio 17 2022'
 			'-AWin32'
 		)
 		;;

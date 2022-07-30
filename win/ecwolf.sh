@@ -34,14 +34,16 @@ ecwolf_configure() {
 	case "$Arch" in
 	x64)
 		CMakeArgs+=(
-			'-GVisual Studio 15 2017 Win64'
+			'-GVisual Studio 17 2022'
+			'-Ax64'
 			'-Tv141_xp'
 			'-DINTERNAL_SDL=ON' '-DINTERNAL_SDL_NET=ON'
 		)
 		;;
 	x86)
 		CMakeArgs+=(
-			'-GVisual Studio 15 2017'
+			'-GVisual Studio 17 2022'
+			'-AWin32'
 			'-Tv141_xp'
 			'-DINTERNAL_SDL=ON' '-DINTERNAL_SDL_NET=ON'
 		)
