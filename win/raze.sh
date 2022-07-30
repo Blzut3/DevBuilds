@@ -34,7 +34,7 @@ declare -A RazeWin=(
 	[outoftree]=1
 	[package]=raze_package
 	[project]='Raze'
-	[remote]='https://github.com/coelckers/raze.git'
+	[remote]='https://github.com/ZDoom/Raze.git'
 	[uploaddir]=raze
 	[vcs]=GitVCS
 )

@@ -96,7 +96,7 @@ declare -A GZDoomWin=(
 	[outoftree]=1
 	[package]=gzdoom_package
 	[project]='GZDoom'
-	[remote]='https://github.com/coelckers/gzdoom.git'
+	[remote]='https://github.com/ZDoom/gzdoom.git'
 	[uploaddir]=gzdoom
 	[vcs]=GitVCS
 )
@@ -131,7 +131,7 @@ declare -A GZDoomDepsWin64=(
 	[outoftree]=0
 	[package]=gzdoom_null
 	[project]='GZDoom-Deps-x64'
-	[remote]='https://github.com/coelckers/gzdoom/releases/download/g4.8.0/gzdoom-4-8-0-Windows-64bit.zip'
+	[remote]='https://github.com/ZDoom/gzdoom/releases/download/g4.8.2/gzdoom-4-8-2-Windows-64bit.zip'
 	[uploaddir]=''
 	[vcs]=DownloadVCS
 )

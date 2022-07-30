@@ -10,11 +10,11 @@ declare -A QZDoomWin=(
 	[branch]='qz-master-2022-05-10'
 	[build]=cmake_generic_build
 	[configure]=gzdoom_configure
-	[multiarch]='x64 x86'
+	[multiarch]='x64'
 	[outoftree]=1
 	[package]=qzdoom_package
 	[project]='QZDoom'
-	[remote]='https://github.com/madame-rachelle/qzdoom.git'
+	[remote]='https://github.com/ZDoom/qzdoom.git'
 	[uploaddir]=qzdoom
 	[vcs]=GitVCS
 )

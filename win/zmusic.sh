@@ -28,7 +28,7 @@ declare -A ZMusicWin=(
 	[outoftree]=0
 	[package]=zmusic_null
 	[project]='ZMusic'
-	[remote]='https://github.com/coelckers/ZMusic/releases/download/1.1.3/zmusic_1.1.3.zip'
+	[remote]='https://github.com/ZDoom/ZMusic/releases/download/1.1.3/zmusic_1.1.3.zip'
 	[uploaddir]=''
 	[vcs]=DownloadVCS
 )
