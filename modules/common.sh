@@ -51,3 +51,15 @@ register_dep() {
 	# shellcheck disable=SC2034
 	DepConfigs[${Config[project]}]=$ConfigVar
 }
+
+reverse_array() {
+	declare -n Out=$1
+
+	declare -a Temp=("${Out[@]}")
+	Out=()
+
+	declare i
+	for (( i = ${#Temp[@]}; i-- > 0; )); do
+		Out+=("${Temp[i]}")
+	done
+}

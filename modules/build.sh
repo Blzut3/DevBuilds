@@ -112,6 +112,8 @@ run_build() {
 		ArtifactsOut+=("${Config[project],,}-$Version.log.xz")
 
 		if [[ ${Config[uploaddir]} ]]; then
+			# Upload in reverse order so timestamps work out for reverse chronological
+			reverse_array ArtifactsOut
 			scp -i "$SSHIdentity" "${ArtifactsOut[@]}" "$SSHUsername@$SSHServer:$SSHBaseDirectory/${Config[uploaddir]}/"
 		fi
 
