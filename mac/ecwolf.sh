@@ -19,10 +19,10 @@ ecwolf_configure() {
 
 	case "$Arch" in
 	x86_64)
-		mac_target 10.7
+		mac_target 10.9
 		CMakeArgs+=(
 			'-DCMAKE_OSX_ARCHITECTURES=x86_64'
-			'-DCMAKE_OSX_SYSROOT=/Developer/SDKs/MacOSX10.11.sdk'
+			'-DCMAKE_OSX_SYSROOT=/Developer/SDKs/MacOSX10.9.sdk'
 			'-DINTERNAL_SDL=ON' '-DINTERNAL_SDL_NET=ON'
 		)
 		;;
