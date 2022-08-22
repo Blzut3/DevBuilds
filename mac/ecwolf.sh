@@ -42,6 +42,7 @@ ecwolf_configure() {
 			'-DINTERNAL_SDL=OFF'
 			'-DINTERNAL_SDL_NET=OFF'
 			'-DFORCE_SDL12=ON'
+			'-DHAVE_SMMINTRIN_H=1'
 			"-DSDL_LIBRARY=$SDL12Framework/SDL;-framework cocoa"
 			"-DSDL_INCLUDE_DIR=$SDL12Framework/Headers"
 			"-DSDL_NET_LIBRARY=$SDLnet12Framework/SDL_net"
