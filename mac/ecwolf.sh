@@ -89,7 +89,13 @@ ecwolf_package() {
 	declare SDLnet12Framework="$(lookup_build_dir 'SDL_net-1.2')/SDL_net.framework"
 
 	rm -rf ECWolf.app &&
-	cp -a x86_64/ecwolf.app ECWolf.app &&
+	cp -a x86_64/ecwolf.app ECWolf.app || return
+
+	declare Arch
+	for Arch in i386 ppc; do
+		install_name_tool_xc11 -change @rpath/SDL.framework/Versions/A/SDL @executable_path/../Frameworks/SDL "$Arch"/ecwolf.app/Contents/MacOS/ecwolf &&
+		install_name_tool_xc11 -change @rpath/SDL_net.framework/Versions/A/SDL_net @executable_path/../Frameworks/SDL_net "$Arch"/ecwolf.app/Contents/MacOS/ecwolf || return
+	done
 
 	rm ECWolf.app/Contents/MacOS/ecwolf &&
 	lipo \
@@ -98,16 +104,12 @@ ecwolf_package() {
 		-arch ppc ppc/ecwolf.app/Contents/MacOS/ecwolf \
 		-create -output ECWolf.app/Contents/MacOS/ecwolf &&
 
-	install_name_tool -change @rpath/SDL.framework/Versions/A/SDL @executable_path/../Frameworks/SDL ECWolf.app/Contents/MacOS/ecwolf &&
-	install_name_tool -change @rpath/SDL_net.framework/Versions/A/SDL @executable_path/../Frameworks/SDL_net ECWolf.app/Contents/MacOS/ecwolf &&
-
 	mkdir -p ECWolf.app/Contents/Frameworks &&
 	lipo "${SDL12Framework}/Versions/A/SDL" -remove x86_64 -output ECWolf.app/Contents/Frameworks/SDL &&
 	cp "${SDLnet12Framework}/Versions/A/SDL_net" ECWolf.app/Contents/Frameworks/ &&
 
 	/usr/libexec/PlistBuddy -c "Set :CFBundleVersion $Version" ECWolf.app/Contents/Info.plist &&
 	/usr/libexec/PlistBuddy -c "Set :CFBundleShortVersionString $Version" ECWolf.app/Contents/Info.plist &&
-	/usr/libexec/PlistBuddy -c "Set :CFBundleLongVersionString $Version" ECWolf.app/Contents/Info.plist &&
 
 	sign_app ECWolf.app &&
 	make_dmg ECWolf "ecwolf-$Version.dmg" ECWolf.app || return

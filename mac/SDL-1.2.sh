@@ -56,8 +56,8 @@ SDLnet12_configure() {
 	mount_dmg "$Image" SDL12_extract_framework SDL_net.framework || return
 
 	# Change to @rpath to avoid the link time error
-	install_name_tool -change {@executable_path/../Frameworks,@rpath}/SDL.framework/Versions/A/SDL SDL_net.framework/Versions/A/SDL_net &&
-	install_name_tool -id @rpath/SDL_net.framework/Versions/A/SDL_net SDL_net.framework/Versions/A/SDL_net
+	install_name_tool_xc11 -change {@executable_path/../Frameworks,@rpath}/SDL.framework/Versions/A/SDL SDL_net.framework/Versions/A/SDL_net &&
+	install_name_tool_xc11 -id @rpath/SDL_net.framework/Versions/A/SDL_net SDL_net.framework/Versions/A/SDL_net
 }
 
 # shellcheck disable=SC2034
