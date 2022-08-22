@@ -1,27 +1,20 @@
-#!/usr/local/bin/bash-4.4
+#!/usr/local/bin/bash-5.1
 
-eternity_build() {
+eternity_configure() {
 	#declare -n Config=$1
 	shift
-	#declare ProjectDir=$1
+	declare ProjectDir=$1
 	shift
 	#declare Arch=$1
 	shift
 
-	cd macosx || return
-	xcodebuild -target eternity clean
-	xcodebuild -target eternity DEVELOPMENT_TEAM="$MacDevelopmentTeam" || return
+	declare -a CMakeArgs=()
+	cmake_config_init CMakeArgs
+	CMakeArgs+=(
+		'-G' 'Xcode'
+	)
 
-	mkdir -p builds
-	cp build/Release/eternity builds/ || return
-
-	cd launcher || return
-	xcodebuild clean
-	xcodebuild DEVELOPMENT_TEAM="$MacDevelopmentTeam" || return
-}
-
-eternity_configure() {
-	:
+	cmake "$ProjectDir" "${CMakeArgs[@]}"
 }
 
 eternity_package() {
@@ -34,8 +27,8 @@ eternity_package() {
 	declare -n Artifacts=$1
 	shift
 
-	sign_app "macosx/launcher/build/Release/Eternity Engine.app" &&
-	make_dmg 'Eternity Engine' "eternity-$Version.dmg" "macosx/launcher/build/Release/Eternity Engine.app" || return
+	sign_app "x86_64/macosx/launcher/Release/Eternity Engine.app" &&
+	make_dmg 'Eternity Engine' "eternity-$Version.dmg" "x86_64/macosx/launcher/Release/Eternity Engine.app" || return
 
 	Artifacts+=("eternity-$Version.dmg")
 }
@@ -43,10 +36,10 @@ eternity_package() {
 # shellcheck disable=SC2034
 declare -A EternityMac=(
 	[branch]='master'
-	[build]=eternity_build
+	[build]=cmake_generic_build
 	[configure]=eternity_configure
 	[multiarch]='x86_64'
-	[outoftree]=0
+	[outoftree]=1
 	[package]=eternity_package
 	[project]='Eternity'
 	[remote]='git@github.com:team-eternity/eternity.git'

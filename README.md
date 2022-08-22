@@ -64,6 +64,7 @@ On macOS the following are also required for app signing.
 
 * **MacDeveloperID**
 * **MacDevelopmentTeam**
+* **KeychainPassword**
 
 The config file, being a bash script, may of course contain other statements
 such as setting the PATH.
@@ -86,18 +87,22 @@ can be run by passing it's `project` name to `-p`. If no changes have occurred
 
 The version of Bash that macOS provides is horribly outdated. Besides the
 complexity of setting up the legacy compiler tool chains, it is required that
-Bash 4.4 be compiled.
+Bash 5.1 be compiled.
+
+Signing keys are expected to be in a keychain called BuildServer under the
+building user's account.
 
 ### Expected environment
 
-* macOS 10.14
-* Xcode 10
+* macOS 11
+* Xcode 12
 * [XcodeLegacy](https://github.com/devernay/xcodelegacy)
 * [PowerPC cross compilers](http://maniacsvault.net/articles/powerpccross)
-* Bash 4.4 (as /usr/local/bin/bash-4.4)
+* Bash 5.1 (as /usr/local/bin/bash-5.1)
 * CMake
 * Git
 * Mercurial
+* xz
 
 ## Windows
 

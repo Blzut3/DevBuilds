@@ -1,7 +1,9 @@
-#!/usr/local/bin/bash-4.4
+#!/usr/local/bin/bash-5.1
 # shellcheck disable=SC1090,SC2155
 
 set -o pipefail
+
+readonly BuildServerKeychain=$HOME/Library/Keychains/BuildServer.keychain-db
 
 # Ensure that critical variables are set in the config
 check_config() {
@@ -15,6 +17,17 @@ check_config() {
 		return 1
 	fi
 	return 0
+}
+
+get_default_keychains() {
+	declare -n Keychains=$1
+	shift
+
+	while read -r Keychain; do
+		Keychain=${Keychain#*\"}
+		Keychain=${Keychain%\"*}
+		Keychains+=("$Keychain")
+	done < <(security list-keychains -d user)
 }
 
 nproc() {
@@ -49,7 +62,6 @@ make_dmg() {
 	if (( Ret == 0 )); then
 		hdiutil convert "$Output" -format UDBZ -o "tmp$Output" &&
 		mv "tmp$Output" "$Output" &&
-		hdiutil internet-enable -yes "$Output"
 		return
 	fi
 
@@ -89,6 +101,10 @@ main() {
 	# Load modules and configuration
 	cd "${0%/*}" || return
 
+	# Find Xcode SDKs path
+	MacSdkPath=$(xcrun --show-sdk-path)
+	MacSdkPath=${MacSdkPath%/MacOSX.sdk}
+
 	. ~/Library/Preferences/BuildServer/config.sh
 
 	check_config || return
@@ -106,7 +122,17 @@ main() {
 	parse_args "$@"
 	shift $((OPTIND-1))
 
+	# We need to change the default keychain and set it back for Xcode
+	declare DefaultKeychains=()
+	get_default_keychains DefaultKeychains
+	security unlock-keychain -p "$KeychainPassword" "$BuildServerKeychain" || return
+	security list-keychains -d user -s "$BuildServerKeychain" || return
+
 	run_builds
+	declare Ret=$?
+
+	security list-keychains -d user -s "${DefaultKeychains[@]}"
+	return "$Ret"
 }
 
 main "$@" || exit
