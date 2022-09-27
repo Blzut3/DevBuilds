@@ -23,6 +23,7 @@ eternity_configure() {
 	x86)
 		CMakeArgs+=(
 			'-GVisual Studio 17 2022'
+			'-AWin32'
 			'-Tv141_xp'
 		)
 		;;
