@@ -54,3 +54,33 @@ declare -A LZDoomWin=(
 	[vcs]=GitVCS
 )
 register_build LZDoomWin
+
+# shellcheck disable=SC2034
+declare -A LZDoomDepsWin32=(
+        [branch]=''
+        [build]=gzdoom_null
+        [configure]=gzdoom_deps_configure
+        [multiarch]='all'
+        [outoftree]=0
+        [package]=gzdoom_null
+        [project]='LZDoom-Deps-x86'
+        [remote]='https://zdoom.org/files/lzdoom/bin/LZDoom_3.88b_x86.zip'
+        [uploaddir]=''
+        [vcs]=DownloadVCS
+)
+register_dep LZDoomDepsWin32
+
+# shellcheck disable=SC2034
+declare -A LZDoomDepsWin64=(
+        [branch]=''
+        [build]=gzdoom_null
+        [configure]=gzdoom_deps_configure
+        [multiarch]='all'
+        [outoftree]=0
+        [package]=gzdoom_null
+        [project]='LZDoom-Deps-x64'
+        [remote]='https://zdoom.org/files/lzdoom/bin/LZDoom_3.88b_x64.zip'
+        [uploaddir]=''
+        [vcs]=DownloadVCS
+)
+register_dep LZDoomDepsWin64

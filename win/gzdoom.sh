@@ -49,22 +49,16 @@ gzdoom_package_generic() {
 	declare Arch
 	for Arch in ${Config[multiarch]}; do
 		(
-			declare OpenALDir=$(lookup_build_dir "OpenAL")
 			declare DepsDir
-			if [[ $PackageName == 'gzdoom' || $PackageName == 'raze' ]]; then
-				DepsDir="$(lookup_build_dir "ZMusic")/$Arch"
+			if [[ $PackageName == 'lzdoom' ]]; then
+				DepsDir=$(lookup_build_dir "LZDoom-Deps-$Arch")
+			elif [[ $PackageName == 'raze' ]]; then
+				DepsDir=$(lookup_build_dir "Raze-Deps-$Arch")
 			else
 				DepsDir=$(lookup_build_dir "GZDoom-Deps-$Arch")
 			fi
 
-			declare ExcludeZMusic
-			if [[ $PackageName == 'raze' ]]; then
-				ExcludeZMusic='zmusic.dll'
-			else
-				ExcludeZMusic='zmusiclite.dll'
-			fi
-
-			mapfile -t ExtraFiles < <(find "$DepsDir" -iname '*.dll' -and -not -iname 'openal32.dll' -and -not -iname "$ExcludeZMusic")
+			mapfile -t ExtraFiles < <(find "$DepsDir" -iname '*.dll')
 
 			cd "$Arch/Release" || return
 
@@ -75,7 +69,6 @@ gzdoom_package_generic() {
 			7z a "../../$PackageName-$Arch-$Version.7z" \
 				./*.exe ./*.pk3 soundfonts/* \
 				"${ExtraFiles[@]}" \
-				"$OpenALDir/bin/$Arch/openal32.dll" \
 				-mx=9 &&
 			7z a "../../$PackageName-$Arch-$Version.map.bz2" "$PackageName.map" -mx=9
 		) &&
@@ -131,7 +124,7 @@ declare -A GZDoomDepsWin64=(
 	[outoftree]=0
 	[package]=gzdoom_null
 	[project]='GZDoom-Deps-x64'
-	[remote]='https://github.com/ZDoom/gzdoom/releases/download/g4.8.2/gzdoom-4-8-2-Windows-64bit.zip'
+	[remote]='https://github.com/ZDoom/gzdoom/releases/download/g4.10.0/gzdoom-4-10-0-Windows-64bit.zip'
 	[uploaddir]=''
 	[vcs]=DownloadVCS
 )

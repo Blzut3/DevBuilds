@@ -39,3 +39,18 @@ declare -A RazeWin=(
 	[vcs]=GitVCS
 )
 register_build RazeWin
+
+# shellcheck disable=SC2034
+declare -A RazeDepsWin64=(
+        [branch]=''
+        [build]=gzdoom_null
+        [configure]=gzdoom_deps_configure
+        [multiarch]='all'
+        [outoftree]=0
+        [package]=gzdoom_null
+        [project]='Raze-Deps-x64'
+        [remote]='https://github.com/ZDoom/Raze/releases/download/1.5.0/raze_1.5.0.zip'
+        [uploaddir]=''
+        [vcs]=DownloadVCS
+)
+register_dep RazeDepsWin64
