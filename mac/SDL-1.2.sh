@@ -13,64 +13,97 @@ SDL12_extract_framework() {
 	cp -a "$Framework" "$DestDir"
 }
 
-SDL12_configure() {
-	declare -n Config=$1
+SDL12_build() {
+	#declare -n Config=$1
 	shift
 	#declare ProjectDir=$1
 	shift
 	#declare Arch=$1
 	shift
 
-	rm -rf SDL.framework
+	mac_target 10.4
+	make -j$(nproc) && make install
+}
 
-	declare Image=${Config[remote]##*/}
-	mount_dmg "$Image" SDL12_extract_framework SDL.framework
+SDL12_configure() {
+	#declare -n Config=$1
+	shift
+	declare ProjectDir=$1
+	shift
+	declare Arch=$1
+	shift
+
+	declare Sdk="$MacSdkPath/MacOSX10.6.sdk"
+	declare Host=i386-apple-darwin10.8.0
+	if [[ $Arch == 'ppc' ]]; then
+		Sdk="$MacSdkPath/MacOSX10.5.sdk"
+		Host=powerpc-apple-darwin10.8.0
+	fi
+
+	declare Flags="-isysroot $Sdk -mmacosx-version-min=10.4 -arch $Arch"
+
+	mac_target 10.4
+	CC=/usr/local/bin/gcc-4.2 CXX=/usr/local/bin/g++-4.2 CPP=/usr/bin/cpp \
+		CFLAGS="$Flags" CXXFLAGS="$Flags" LDFLAGS="$Flags" \
+		"$ProjectDir/configure" --prefix "$PWD/install" \
+		--host="$Host" \
+		--enable-shared --enable-static
 }
 
 # shellcheck disable=SC2034
 declare -A SDL12Mac=(
-	[branch]=''
-	[build]=SDL12_null
+	[branch]='main'
+	[build]=SDL12_build
 	[configure]=SDL12_configure
-	[multiarch]='all'
-	[outoftree]=0
+	[multiarch]='i386 ppc'
+	[outoftree]=1
 	[package]=SDL12_null
 	[project]='SDL-1.2'
-	[remote]='https://www.libsdl.org/release/SDL-1.2.15-OSX10.4.dmg'
+	[remote]='git@github.com:libsdl-org/SDL-1.2.git'
 	[uploaddir]=''
-	[vcs]=DownloadVCS
+	[vcs]=GitVCS
 )
 register_dep SDL12Mac
 
 SDLnet12_configure() {
-	declare -n Config=$1
+	#declare -n Config=$1
 	shift
-	#declare ProjectDir=$1
+	declare ProjectDir=$1
 	shift
-	#declare Arch=$1
+	declare Arch=$1
 	shift
 
-	rm -rf SDL_net.framework
+	declare SDL12Dir="$(lookup_build_dir 'SDL-1.2' "$Arch")"
 
-	declare Image=${Config[remote]##*/}
-	mount_dmg "$Image" SDL12_extract_framework SDL_net.framework || return
+	declare Sdk="$MacSdkPath/MacOSX10.6.sdk"
+	declare Host=i386-apple-darwin10.8.0
+	if [[ $Arch == 'ppc' ]]; then
+		Sdk="$MacSdkPath/MacOSX10.5.sdk"
+		Host=powerpc-apple-darwin10.8.0
+	fi
 
-	# Change to @rpath to avoid the link time error
-	install_name_tool_xc11 -change {@executable_path/../Frameworks,@rpath}/SDL.framework/Versions/A/SDL SDL_net.framework/Versions/A/SDL_net &&
-	install_name_tool_xc11 -id @rpath/SDL_net.framework/Versions/A/SDL_net SDL_net.framework/Versions/A/SDL_net
+	declare Flags="-isysroot $Sdk -mmacosx-version-min=10.4 -arch $Arch"
+
+	mac_target 10.4
+	CC=/usr/local/bin/gcc-4.2 CXX=/usr/local/bin/g++-4.2 CPP=/usr/bin/cpp \
+		CFLAGS="$Flags" CXXFLAGS="$Flags" LDFLAGS="$Flags" \
+		"$ProjectDir/configure" --prefix "$PWD/install" \
+		--host="$Host" \
+		--enable-shared --enable-static \
+		--with-sdl-prefix="$SDL12Dir/install"
 }
 
 # shellcheck disable=SC2034
 declare -A SDLnet12Mac=(
-	[branch]=''
-	[build]=SDL12_null
+	[branch]='SDL-1.2'
+	[build]=SDL12_build
 	[configure]=SDLnet12_configure
-	[multiarch]='all'
-	[outoftree]=0
+	[multiarch]='i386 ppc'
+	[outoftree]=1
 	[package]=SDL12_null
 	[project]='SDL_net-1.2'
-	[remote]='https://www.libsdl.org/projects/SDL_net/release/SDL_net-1.2.7.dmg'
+	[remote]='git@github.com:libsdl-org/SDL_net.git'
 	[uploaddir]=''
-	[vcs]=DownloadVCS
+	[vcs]=GitVCS
 )
 register_dep SDLnet12Mac

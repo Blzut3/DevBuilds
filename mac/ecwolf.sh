@@ -26,11 +26,22 @@ ecwolf_configure() {
 			'-DINTERNAL_SDL=ON' '-DINTERNAL_SDL_NET=ON'
 		)
 		;;
+	arm64)
+		mac_target 11.0
+		declare NativeBuildDir=$(lookup_build_dir 'ECWolf' 'x86_64')
+		CMakeArgs+=(
+			'-DCMAKE_OSX_ARCHITECTURES=arm64'
+			"-DCMAKE_OSX_SYSROOT=$MacSdkPath/MacOSX11.0.sdk"
+			'-DINTERNAL_SDL=ON' '-DINTERNAL_SDL_NET=ON'
+			'-DFORCE_CROSSCOMPILE=ON'
+			"-DIMPORT_EXECUTABLES=$NativeBuildDir/ImportExecutables.cmake"
+		)
+		;;
 	i386)
 		mac_target 10.4
 		declare NativeBuildDir=$(lookup_build_dir 'ECWolf' 'x86_64')
-		declare SDL12Framework="$(lookup_build_dir 'SDL-1.2')/SDL.framework"
-		declare SDLnet12Framework="$(lookup_build_dir 'SDL_net-1.2')/SDL_net.framework"
+		declare SDL12Dir="$(lookup_build_dir 'SDL-1.2' i386)/install"
+		declare SDLnet12Dir="$(lookup_build_dir 'SDL_net-1.2' i386)/install"
 		CMakeArgs+=(
 			'-DCMAKE_OSX_ARCHITECTURES=i386'
 			"-DCMAKE_OSX_SYSROOT=$MacSdkPath/MacOSX10.6.sdk"
@@ -43,17 +54,17 @@ ecwolf_configure() {
 			'-DINTERNAL_SDL_NET=OFF'
 			'-DFORCE_SDL12=ON'
 			'-DHAVE_SMMINTRIN_H=1'
-			"-DSDL_LIBRARY=$SDL12Framework/SDL;-framework cocoa"
-			"-DSDL_INCLUDE_DIR=$SDL12Framework/Headers"
-			"-DSDL_NET_LIBRARY=$SDLnet12Framework/SDL_net"
-			"-DSDL_NET_INCLUDE_DIR=$SDLnet12Framework/Headers"
+			"-DSDL_LIBRARY=$SDL12Dir/lib/libSDL.a;-framework cocoa;-framework OpenGL;-framework ApplicationServices;-framework Carbon;-framework AudioToolbox;-framework AudioUnit;-framework IOKit"
+			"-DSDL_INCLUDE_DIR=$SDL12Dir/include/SDL"
+			"-DSDL_NET_LIBRARY=$SDLnet12Dir/lib/libSDL_net.a"
+			"-DSDL_NET_INCLUDE_DIR=$SDLnet12Dir/include/SDL"
 		)
 		;;
 	ppc)
 		mac_target 10.4
 		declare NativeBuildDir=$(lookup_build_dir 'ECWolf' 'x86_64')
-		declare SDL12Framework="$(lookup_build_dir 'SDL-1.2')/SDL.framework"
-		declare SDLnet12Framework="$(lookup_build_dir 'SDL_net-1.2')/SDL_net.framework"
+		declare SDL12Dir="$(lookup_build_dir 'SDL-1.2' ppc)/install"
+		declare SDLnet12Dir="$(lookup_build_dir 'SDL_net-1.2' ppc)/install"
 		CMakeArgs+=(
 			'-DCMAKE_OSX_ARCHITECTURES=ppc'
 			"-DCMAKE_OSX_SYSROOT=$MacSdkPath/MacOSX10.5.sdk"
@@ -65,10 +76,10 @@ ecwolf_configure() {
 			'-DINTERNAL_SDL=OFF'
 			'-DINTERNAL_SDL_NET=OFF'
 			'-DFORCE_SDL12=ON'
-			"-DSDL_LIBRARY=$SDL12Framework/SDL;-framework cocoa"
-			"-DSDL_INCLUDE_DIR=$SDL12Framework/Headers"
-			"-DSDL_NET_LIBRARY=$SDLnet12Framework/SDL_net"
-			"-DSDL_NET_INCLUDE_DIR=$SDLnet12Framework/Headers"
+			"-DSDL_LIBRARY=$SDL12Dir/lib/libSDL.a;-framework cocoa;-framework OpenGL;-framework ApplicationServices;-framework Carbon;-framework AudioToolbox;-framework AudioUnit;-framework IOKit"
+			"-DSDL_INCLUDE_DIR=$SDL12Dir/include/SDL"
+			"-DSDL_NET_LIBRARY=$SDLnet12Dir/lib/libSDL_net.a"
+			"-DSDL_NET_INCLUDE_DIR=$SDLnet12Dir/include/SDL"
 		)
 	esac
 
@@ -85,28 +96,16 @@ ecwolf_package() {
 	declare -n Artifacts=$1
 	shift
 
-	declare SDL12Framework="$(lookup_build_dir 'SDL-1.2')/SDL.framework"
-	declare SDLnet12Framework="$(lookup_build_dir 'SDL_net-1.2')/SDL_net.framework"
-
 	rm -rf ECWolf.app &&
 	cp -a x86_64/ecwolf.app ECWolf.app || return
 
-	declare Arch
-	for Arch in i386 ppc; do
-		install_name_tool_xc11 -change @rpath/SDL.framework/Versions/A/SDL @executable_path/../Frameworks/SDL "$Arch"/ecwolf.app/Contents/MacOS/ecwolf &&
-		install_name_tool_xc11 -change @rpath/SDL_net.framework/Versions/A/SDL_net @executable_path/../Frameworks/SDL_net "$Arch"/ecwolf.app/Contents/MacOS/ecwolf || return
-	done
-
 	rm ECWolf.app/Contents/MacOS/ecwolf &&
 	lipo \
+		-arch arm64 arm64/ecwolf.app/Contents/MacOS/ecwolf \
 		-arch i386 i386/ecwolf.app/Contents/MacOS/ecwolf \
 		-arch x86_64 x86_64/ecwolf.app/Contents/MacOS/ecwolf \
 		-arch ppc ppc/ecwolf.app/Contents/MacOS/ecwolf \
 		-create -output ECWolf.app/Contents/MacOS/ecwolf &&
-
-	mkdir -p ECWolf.app/Contents/Frameworks &&
-	lipo "${SDL12Framework}/Versions/A/SDL" -remove x86_64 -output ECWolf.app/Contents/Frameworks/SDL &&
-	cp "${SDLnet12Framework}/Versions/A/SDL_net" ECWolf.app/Contents/Frameworks/ &&
 
 	/usr/libexec/PlistBuddy -c "Set :CFBundleVersion $Version" ECWolf.app/Contents/Info.plist &&
 	/usr/libexec/PlistBuddy -c "Set :CFBundleShortVersionString $Version" ECWolf.app/Contents/Info.plist &&
@@ -122,11 +121,11 @@ declare -A ECWolfMac=(
 	[branch]='master'
 	[build]=cmake_generic_build
 	[configure]=ecwolf_configure
-	[multiarch]='x86_64 i386 ppc'
+	[multiarch]='x86_64 arm64 i386 ppc'
 	[outoftree]=1
 	[package]=ecwolf_package
 	[project]='ECWolf'
-	[remote]='ssh://hg@bitbucket.org/ecwolf/ecwolf.git'
+	[remote]='ssh://git@bitbucket.org/ecwolf/ecwolf.git'
 	[uploaddir]=ecwolf-mac
 	[vcs]=GitVCS
 )
