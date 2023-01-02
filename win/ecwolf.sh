@@ -40,6 +40,15 @@ ecwolf_configure() {
 			'-DINTERNAL_SDL=ON' '-DINTERNAL_SDL_NET=ON'
 		)
 		;;
+	arm64)
+		declare NativeBuildDir=$(lookup_build_dir 'ECWolf' 'x64')
+		CMakeArgs+=(
+			'-GVisual Studio 17 2022'
+			'-AARM64'
+			'-DINTERNAL_SDL=ON' '-DINTERNAL_SDL_NET=ON'
+			'-DFORCE_CROSSCOMPILE=ON' "-DIMPORT_EXECUTABLES=$NativeBuildDir/ImportExecutables.cmake"
+		)
+		;;
 	x86)
 		CMakeArgs+=(
 			'-GVisual Studio 17 2022'
@@ -52,17 +61,16 @@ ecwolf_configure() {
 		ecwolf_set_legacy_cmake
 
 		declare SDL12Dir=$(lookup_build_dir 'SDL-1.2')
-		declare SDLnet12Dir=$(lookup_build_dir 'SDL_net-1.2')
 		CMakeArgs+=(
 			'-GVisual Studio 8 2005'
 			'-DCMAKE_WARN_VS8=OFF'
 			'-DINTERNAL_SDL=OFF'
 			'-DINTERNAL_SDL_NET=OFF'
 			'-DFORCE_SDL12=ON'
-			"-DSDL_LIBRARY=$SDL12Dir/lib/x86/SDL.lib"
-			"-DSDL_INCLUDE_DIR=$SDL12Dir/include"
-			"-DSDL_NET_LIBRARY=$SDLnet12Dir/lib/x86/SDL_net.lib"
-			"-DSDL_NET_INCLUDE_DIR=$SDLnet12Dir/include"
+			"-DSDL_LIBRARY=$(cygpath -w "$SDL12Dir")/static/SDL.lib;winmm.lib;dxguid.lib"
+			"-DSDL_INCLUDE_DIR=$SDL12Dir/include/SDL"
+			"-DSDL_NET_LIBRARY:STRING=$(cygpath -w "$SDL12Dir")/static/SDL_net.lib;Ws2_32.lib;Iphlpapi.lib"
+			"-DSDL_NET_INCLUDE_DIR=$SDL12Dir/include/SDL"
 		)
 		;;
 	esac
@@ -86,14 +94,9 @@ ecwolf_package() {
 	declare Arch
 	for Arch in ${Config[multiarch]}; do
 		(
-			declare -a ExtraFiles=()
-			if [[ $Arch == 'legacy' ]]; then
-				ExtraFiles+=("$SDL12Dir/lib/x86/SDL.dll" "$SDLnet12Dir/lib/x86/SDL_net.dll")
-			fi
-
 			cd "$Arch/Release" &&
 			7z a "../../ecwolf-$Arch-$Version.7z" \
-				./*.exe ./*.pk3 "${ExtraFiles[@]}" \
+				./*.exe ./*.pk3 \
 				-mx=9 &&
 			7z a "../../ecwolf-$Arch-$Version.map.xz" ecwolf.map -mx=9 &&
 			7z a "../../ecwolf-$Arch-$Version.pdb.xz" ecwolf.pdb -mx=9
@@ -107,7 +110,7 @@ declare -A ECWolfWin=(
 	[branch]='master'
 	[build]=ecwolf_build
 	[configure]=ecwolf_configure
-	[multiarch]='x64 x86 legacy'
+	[multiarch]='x64 arm64 x86 legacy'
 	[outoftree]=1
 	[package]=ecwolf_package
 	[project]='ECWolf'
