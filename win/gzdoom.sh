@@ -124,7 +124,7 @@ declare -A GZDoomDepsWin64=(
 	[outoftree]=0
 	[package]=gzdoom_null
 	[project]='GZDoom-Deps-x64'
-	[remote]='https://github.com/ZDoom/gzdoom/releases/download/g4.10.0/gzdoom-4-10-0-Windows-64bit.zip'
+	[remote]='https://github.com/ZDoom/gzdoom/releases/download/g4.13.2/gzdoom-4-13-2-windows.zip'
 	[uploaddir]=''
 	[vcs]=DownloadVCS
 )
