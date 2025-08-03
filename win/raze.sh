@@ -49,7 +49,7 @@ declare -A RazeDepsWin64=(
         [outoftree]=0
         [package]=gzdoom_null
         [project]='Raze-Deps-x64'
-        [remote]='https://github.com/ZDoom/Raze/releases/download/1.5.0/raze_1.5.0.zip'
+        [remote]='https://github.com/ZDoom/Raze/releases/download/1.10.2/raze-1.10.2-windows.zip'
         [uploaddir]=''
         [vcs]=DownloadVCS
 )
