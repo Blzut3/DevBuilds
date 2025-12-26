@@ -114,7 +114,7 @@ declare -A ECWolfWin=(
 	[outoftree]=1
 	[package]=ecwolf_package
 	[project]='ECWolf'
-	[remote]='https://bitbucket.org/ecwolf/ecwolf.git'
+	[remote]='https://github.com/ECWolfEngine/ECWolf.git'
 	[uploaddir]=ecwolf
 	[vcs]=GitVCS
 )

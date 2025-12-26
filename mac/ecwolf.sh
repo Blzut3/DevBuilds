@@ -125,7 +125,7 @@ declare -A ECWolfMac=(
 	[outoftree]=1
 	[package]=ecwolf_package
 	[project]='ECWolf'
-	[remote]='ssh://git@bitbucket.org/ecwolf/ecwolf.git'
+	[remote]='git@github.com:ECWolfEngine/ECWolf.git'
 	[uploaddir]=ecwolf-mac
 	[vcs]=GitVCS
 )
