@@ -52,6 +52,8 @@ gzdoom_package_generic() {
 			declare DepsDir
 			if [[ $PackageName == 'raze' ]]; then
 				DepsDir=$(lookup_build_dir "Raze-Deps-$Arch")
+			elif [[ $PackageName == 'uzdoom' ]]; then
+				DepsDir=$(lookup_build_dir "UZDoom-Deps-$Arch")
 			else
 				DepsDir=$(lookup_build_dir "GZDoom-Deps-$Arch")
 			fi

@@ -19,3 +19,38 @@ declare -A UZDoomWin=(
 	[vcs]=GitVCS
 )
 register_build UZDoomWin
+
+# Pull the deps from the UZDoom release to make things easier.
+uzdoom_null() {
+	:
+}
+
+uzdoom_deps_configure() {
+	declare -n Config=$1
+	shift
+	#declare ProjectDir=$1
+	shift
+	#declare Arch=$1
+	shift
+
+	declare Image=${Config[remote]##*/}
+	7z x -aoa "$Image" '*.dll' || return
+
+	rm -f zmusic.dll || return
+	return 0
+}
+
+# shellcheck disable=SC2034
+declare -A UZDoomDepsWin64=(
+	[branch]=''
+	[build]=uzdoom_null
+	[configure]=uzdoom_deps_configure
+	[multiarch]='all'
+	[outoftree]=0
+	[package]=uzdoom_null
+	[project]='UZDoom-Deps-x64'
+	[remote]='https://github.com/UZDoom/UZDoom/releases/download/4.14.3/Windows-UZDoom-4.14.3.zip'
+	[uploaddir]=''
+	[vcs]=DownloadVCS
+)
+register_dep UZDoomDepsWin64
