@@ -20,7 +20,7 @@ eternity_configure() {
 eternity_package() {
 	#declare -n Config=$1
 	shift
-	#declare ProjectDir=$1
+	declare ProjectDir=$1
 	shift
 	declare Version=$1
 	shift
@@ -28,7 +28,7 @@ eternity_package() {
 	shift
 
 	sign_app "x86_64/macosx/launcher/Release/Eternity Engine.app" &&
-	make_dmg 'Eternity Engine' "eternity-$Version.dmg" "x86_64/macosx/launcher/Release/Eternity Engine.app" || return
+	make_dmg 'Eternity Engine' "eternity-$Version.dmg" "x86_64/macosx/launcher/Release/Eternity Engine.app" "$ProjectDir/AUTHORS" || return
 
 	Artifacts+=("eternity-$Version.dmg")
 }

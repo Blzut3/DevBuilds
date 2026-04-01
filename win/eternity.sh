@@ -50,6 +50,7 @@ eternity_package() {
 				"$(pwd)"/eternity/Release/*.* \
 				"$ProjectDir/user" \
 				"$ProjectDir/base" \
+				"$ProjectDir/AUTHORS" \
 				-mx=9 '-xr!.gitignore' '-xr!delete.me' '-x!*.map' &&
 			7z a "../Eternity-$Arch-$Version.map.xz" "$(pwd)/eternity/Release/eternity.map" -mx=9 &&
 			7z a "../Eternity-$Arch-$Version.pdb.xz" "$(pwd)/eternity/Release/eternity.pdb" -mx=9
