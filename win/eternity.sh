@@ -24,7 +24,6 @@ eternity_configure() {
 		CMakeArgs+=(
 			'-GVisual Studio 17 2022'
 			'-AWin32'
-			'-Tv141_xp'
 		)
 		;;
 	esac
